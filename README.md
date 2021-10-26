@@ -49,3 +49,9 @@ module "flux_installation" {
   root_repo_path = "some-path-in-root-repo"
 }
 ```
+
+## Dependencies
+
+This repo is dependent on the following providers being defined and pointing to your kubernetes cluster:
+- hashicorp/kubernetes
+- gavinbunney/kubectl
