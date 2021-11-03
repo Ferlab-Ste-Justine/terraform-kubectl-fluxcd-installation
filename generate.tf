@@ -8,11 +8,11 @@
   target_path = "prod-cluster"
   cluster_domain = "__CLUSTER_DOMAIN__"
   namespace = "__FLUX_NAMESPACE__"
-  version = "v0.19.1"
+  version = "v0.21.0"
 }
 
 resource "local_file" "flux" {
-  content = replace(replace(replace(data.flux_install.main.content, "$${", "$$${"), "__FLUX_NAMESPACE__", "$${flux_namespace}"), "__CLUSTER_DOMAIN__", "$${cluster_domain}")
+  content = replace(replace(replace(data.flux_install.flux.content, "$${", "$$${"), "__FLUX_NAMESPACE__", "$${flux_namespace}"), "__CLUSTER_DOMAIN__", "$${cluster_domain}")
   filename = "${path.module}/fluxcd-install-manifests/manifest.yml"
   file_permission = "0600"
 }*/
