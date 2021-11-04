@@ -8,6 +8,7 @@
   target_path = "prod-cluster"
   cluster_domain = "__CLUSTER_DOMAIN__"
   namespace = "__FLUX_NAMESPACE__"
+  components_extra = ["image-reflector-controller", "image-automation-controller"]
   version = "v0.21.0"
 }
 
