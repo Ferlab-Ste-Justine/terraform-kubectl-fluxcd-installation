@@ -39,6 +39,7 @@ locals {
       root_repo_url = var.root_repo_url,
       root_repo_branch = var.root_repo_branch
       root_repo_path = var.root_repo_path
+      root_repo_recurse_submodules = var.root_repo_recurse_submodules
     }
   )))
 }

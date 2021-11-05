@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 1m
   timeout: 30s
-  recurseSubmodules: true
+  recurseSubmodules: ${root_repo_recurse_submodules ? "true" : "false"}
   url: ${root_repo_url}
   secretRef:
     name: root-repo-fluxcd-key
