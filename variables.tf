@@ -36,3 +36,9 @@ variable "root_repo_path" {
   type = string
   default = "./"
 }
+
+variable "root_repo_recurse_submodules" {
+  description = "Whether to clone the gitsubmodules of the root repo"
+  type = bool
+  default = false
+}

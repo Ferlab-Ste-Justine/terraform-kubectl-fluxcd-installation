@@ -18,13 +18,14 @@ However, we found it to be quite an adventure, hence this module.
 
 The module takes the following input variables:
 
-- **flux_namespace**: Namespace the flux controller and resources pointing to the root repo will exist in
-- **cluster_domain**: Internal domain of the kubernetes cluster flux will run in
+- **flux_namespace**: Namespace the flux controller and resources pointing to the root repo will exist in. Defaults to "flux-system".
+- **cluster_domain**: Internal domain of the kubernetes cluster flux will run in. Defaults to "cluster.local".
 - **git_identity**: Git ssh key to access root repo
 - **git_known_hosts**: Git host fingerprint, in the format expected by fluxcd
 - **root_repo_url**: Ssh url of the root repo
-- **root_repo_branch**: Branch to clone in the root repo
-- **root_repo_path**: Path in the root repo containing the root kustomization or ortherwise the manifest files
+- **root_repo_branch**: Branch to clone in the root repo. Defaults to "main".
+- **root_repo_path**: Path in the root repo containing the root kustomization or ortherwise the manifest files. Defaults to the root of the repo.
+- **root_repo_recurse_submodules**: If set to true, git submodules will be recursed in the root repo. Defaults to false.
 
 ## Example
 
