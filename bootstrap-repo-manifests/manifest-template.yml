@@ -12,6 +12,11 @@ spec:
     name: root-repo-fluxcd-key
   ref:
     branch: ${root_repo_branch}
+%{ if trusted_keys_verification ~}
+  verify:
+    mode: head
+    secretRef: root-repo-fluxcd-trusted-keys
+%{ endif ~}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

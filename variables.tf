@@ -10,6 +10,12 @@ variable "cluster_domain" {
   default = "cluster.local"
 }
 
+variable "git_trusted_keys" {
+  description = "Concatenated public keys of all trusted git authors"
+  type = string
+  default = ""
+}
+
 variable "git_identity" {
   description = "Git ssh key to access root repo"
   type = string

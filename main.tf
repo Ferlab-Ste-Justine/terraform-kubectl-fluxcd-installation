@@ -10,6 +10,20 @@ resource "kubernetes_namespace" "fluxcd" {
   }
 }
 
+resource "kubernetes_secret" "git_trusted_keys"  {
+  count = var.git_trusted_keys != "" ? 1 : 0
+  metadata {
+    namespace = var.flux_namespace
+    name =      "root-repo-fluxcd-trusted-keys"
+  }
+
+  data = {
+    "keys.asc"    = var.git_trusted_keys
+  }
+
+  depends_on = [kubernetes_namespace.fluxcd]
+}
+
 resource "kubernetes_secret" "git_ssh_key" {
   metadata {
     namespace = var.flux_namespace
@@ -40,6 +54,7 @@ locals {
       root_repo_branch = var.root_repo_branch
       root_repo_path = var.root_repo_path
       root_repo_recurse_submodules = var.root_repo_recurse_submodules
+      trusted_keys_verification = var.git_trusted_keys != ""
     }
   )))
 }
