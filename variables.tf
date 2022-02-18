@@ -1,8 +1,15 @@
-variable "flux_namespace" {
+variable "fluxcd_namespace" {
   description = "Namespace flux controller will run in"
   type = string
-  default = "flux-system"
+  default = "fluxcd-system"
 }
+
+variable "fluxcd_resources_name" {
+  description = "Name to give to generated bootstrap resources"
+  type = string
+  default = "fluxcd"
+}
+
 
 variable "cluster_domain" {
   description = "Cluster domain of the kubernetes cluster fluxcd will run on"
@@ -17,7 +24,7 @@ variable "git_trusted_keys" {
 }
 
 variable "git_identity" {
-  description = "Git ssh key to access root repo"
+  description = "Git ssh key to access repo"
   type = string
 }
 
@@ -26,25 +33,25 @@ variable "git_known_hosts" {
   type = string
 }
 
-variable "root_repo_url" {
-  description = "Url of the root repo"
+variable "repo_url" {
+  description = "Url of the repo"
   type = string
 }
 
-variable "root_repo_branch" {
-  description = "Branch to use on the root repo"
+variable "repo_branch" {
+  description = "Branch to use on the repo"
   type = string
   default = "main"
 }
 
-variable "root_repo_path" {
-  description = "Path in the root repo to run kustomize on"
+variable "repo_path" {
+  description = "Path in the repo to run kustomize on"
   type = string
   default = "./"
 }
 
-variable "root_repo_recurse_submodules" {
-  description = "Whether to clone the gitsubmodules of the root repo"
+variable "repo_recurse_submodules" {
+  description = "Whether to clone the gitsubmodules of the repo"
   type = bool
   default = false
 }
