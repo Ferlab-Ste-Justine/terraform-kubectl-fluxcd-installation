@@ -21,7 +21,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: ${flux_resources_name}
+  name: ${flux_namespace}-${flux_resources_name}
 rules:
   - apiGroups: ['*']
     resources: ['*']
@@ -38,11 +38,11 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: ${flux_resources_name}
+  name: ${flux_namespace}-${flux_resources_name}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ${flux_resources_name}
+  name: ${flux_namespace}-${flux_resources_name}
 subjects:
   - kind: ServiceAccount
     name: ${flux_resources_name}

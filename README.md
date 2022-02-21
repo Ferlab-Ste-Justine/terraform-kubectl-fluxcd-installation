@@ -19,7 +19,7 @@ However, we found it to be quite an adventure, hence this module.
 The module takes the following input variables:
 
 - **fluxcd_namespace**: Namespace the flux controller and resources pointing to the root repo will exist in. Defaults to "flux-system".
-- **fluxcd_resources_name**: Name to give to created resources. A **GitRepository**, **Kustomization**, and **ServiceAccount** resource will be created under the **fluxcd_namespace** namespace with that name. Additionally, a **ClusterRole** and **ClusterRoleBinding** resource will be created with that name. And finally, two secrets named ```<fluxcd_resources_name>-key``` and ```<fluxcd_resources_name>-trusted-keys``` (the later is optional) will be created in the **fluxcd_namespace** namespace.
+- **fluxcd_resources_name**: Name to give to created resources. A **GitRepository**, **Kustomization**, and **ServiceAccount** resource will be created under the **fluxcd_namespace** namespace with that name. Additionally, a **ClusterRole** and **ClusterRoleBinding** resource will be created with the name ```<fluxcd_namespace>-<fluxcd_resources_name>```. And finally, two secrets named ```<fluxcd_resources_name>-key``` and ```<fluxcd_resources_name>-trusted-keys``` (the later is optional) will be created in the **fluxcd_namespace** namespace.
 - **cluster_domain**: Internal domain of the kubernetes cluster flux will run in. Defaults to "cluster.local".
 - **git_identity**: Git ssh key to access repo
 - **git_known_hosts**: Git host fingerprint, in the format expected by fluxcd
