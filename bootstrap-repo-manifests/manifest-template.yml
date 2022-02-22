@@ -15,7 +15,8 @@ spec:
 %{ if trusted_keys_verification ~}
   verify:
     mode: head
-    secretRef: ${flux_resources_name}-trusted-keys
+    secretRef:
+      name: ${flux_resources_name}-trusted-keys
 %{ endif ~}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
