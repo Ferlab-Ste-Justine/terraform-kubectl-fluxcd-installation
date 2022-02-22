@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "fluxcd" {
   metadata {
-    name = var.flux_namespace
+    name = var.fluxcd_namespace
   }
 
   lifecycle {
@@ -10,10 +10,24 @@ resource "kubernetes_namespace" "fluxcd" {
   }
 }
 
+resource "kubernetes_secret" "git_trusted_keys"  {
+  count = var.git_trusted_keys != "" ? 1 : 0
+  metadata {
+    namespace = var.fluxcd_namespace
+    name =      "${var.fluxcd_resources_name}-trusted-keys"
+  }
+
+  data = {
+    "keys.asc" = var.git_trusted_keys
+  }
+
+  depends_on = [kubernetes_namespace.fluxcd]
+}
+
 resource "kubernetes_secret" "git_ssh_key" {
   metadata {
-    namespace = var.flux_namespace
-    name =      "root-repo-fluxcd-key"
+    namespace = var.fluxcd_namespace
+    name =      "${var.fluxcd_resources_name}-key"
   }
 
   data = {
@@ -25,23 +39,29 @@ resource "kubernetes_secret" "git_ssh_key" {
 }
 
 locals {
-  install_resources = toset(split("---\n", templatefile(
+  install_resources_values = split("---\n", templatefile(
     "${path.module}/fluxcd-install-manifests/manifest-template.yml",
     {
-      flux_namespace = var.flux_namespace,
+      flux_namespace = var.fluxcd_namespace,
       cluster_domain = var.cluster_domain
     }
-  )))
-  bootstrap_repo_resources = toset(split("---\n", templatefile(
+  ))
+  install_resources_keys = [for elem_outer in [for elem_inner in local.install_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${lookup(elem_outer.metadata, "namespace", "default")}/${elem_outer.metadata.name}"]
+  install_resources = zipmap(local.install_resources_keys, local.install_resources_values)
+  bootstrap_repo_resources_values = split("---\n", templatefile(
     "${path.module}/bootstrap-repo-manifests/manifest-template.yml",
     {
-      flux_namespace = var.flux_namespace,
-      root_repo_url = var.root_repo_url,
-      root_repo_branch = var.root_repo_branch
-      root_repo_path = var.root_repo_path
-      root_repo_recurse_submodules = var.root_repo_recurse_submodules
+      flux_namespace = var.fluxcd_namespace,
+      flux_resources_name = var.fluxcd_resources_name
+      repo_url = var.repo_url,
+      repo_branch = var.repo_branch
+      repo_path = var.repo_path
+      repo_recurse_submodules = var.repo_recurse_submodules
+      trusted_keys_verification = var.git_trusted_keys != ""
     }
-  )))
+  ))
+  bootstrap_repo_resources_keys = [for elem_outer in [for elem_inner in local.bootstrap_repo_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${lookup(elem_outer.metadata, "namespace", "default")}/${elem_outer.metadata.name}"]
+  bootstrap_repo_resources = zipmap(local.bootstrap_repo_resources_keys, local.bootstrap_repo_resources_values)
 }
 
 resource "kubectl_manifest" "install" {

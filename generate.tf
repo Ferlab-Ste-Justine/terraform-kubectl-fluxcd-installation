@@ -1,5 +1,5 @@
 //Because of the way terraform works, it is very hard to apply the result of "flux_install" directly on "kubectl_manifest" with a for_each
-//Something about the inability of for_each to handle input that is indeterministic at compilation time
+//Something about the inability of for_each to handle input that is indeterministic at code analysis time
 
 //To circumvent this, we are generating the flux manifest with the terraform snipet below. We change the file name to manifest-template.yml
 
@@ -9,7 +9,7 @@
   cluster_domain = "__CLUSTER_DOMAIN__"
   namespace = "__FLUX_NAMESPACE__"
   components_extra = ["image-reflector-controller", "image-automation-controller"]
-  version = "v0.21.0"
+  version = "v0.27.0"
 }
 
 resource "local_file" "flux" {

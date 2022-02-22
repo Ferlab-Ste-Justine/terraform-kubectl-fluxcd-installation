@@ -1,22 +1,28 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: root-repo
+  name: ${flux_resources_name}
   namespace: ${flux_namespace}
 spec:
   interval: 1m
   timeout: 30s
-  recurseSubmodules: ${root_repo_recurse_submodules ? "true" : "false"}
-  url: ${root_repo_url}
+  recurseSubmodules: ${repo_recurse_submodules ? "true" : "false"}
+  url: ${repo_url}
   secretRef:
-    name: root-repo-fluxcd-key
+    name: ${flux_resources_name}-key
   ref:
-    branch: ${root_repo_branch}
+    branch: ${repo_branch}
+%{ if trusted_keys_verification ~}
+  verify:
+    mode: head
+    secretRef:
+      name: ${flux_resources_name}-trusted-keys
+%{ endif ~}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: flux-root-repo
+  name: ${flux_namespace}-${flux_resources_name}
 rules:
   - apiGroups: ['*']
     resources: ['*']
@@ -27,32 +33,32 @@ rules:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: root-repo
+  name: ${flux_resources_name}
   namespace: ${flux_namespace}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: flux-root-repo
+  name: ${flux_namespace}-${flux_resources_name}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: flux-root-repo
+  name: ${flux_namespace}-${flux_resources_name}
 subjects:
   - kind: ServiceAccount
-    name: root-repo
+    name: ${flux_resources_name}
     namespace: ${flux_namespace}
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: root-repo
+  name: ${flux_resources_name}
   namespace: ${flux_namespace}
 spec:
   interval: 1m
   prune: true
-  serviceAccountName: root-repo
-  path: "${root_repo_path}"
+  serviceAccountName: ${flux_resources_name}
+  path: "${repo_path}"
   sourceRef:
     kind: GitRepository
-    name: root-repo
+    name: ${flux_resources_name}
