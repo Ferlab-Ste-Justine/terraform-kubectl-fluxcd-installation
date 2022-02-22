@@ -46,7 +46,7 @@ locals {
       cluster_domain = var.cluster_domain
     }
   ))
-  install_resources_keys = [for elem_outer in [for elem_inner in local.install_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${elem_outer.metadata.name}"]
+  install_resources_keys = [for elem_outer in [for elem_inner in local.install_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${lookup(elem_outer.metadata, "namespace", "default")}/${elem_outer.metadata.name}"]
   install_resources = zipmap(local.install_resources_keys, local.install_resources_values)
   bootstrap_repo_resources_values = split("---\n", templatefile(
     "${path.module}/bootstrap-repo-manifests/manifest-template.yml",
@@ -60,7 +60,7 @@ locals {
       trusted_keys_verification = var.git_trusted_keys != ""
     }
   ))
-  bootstrap_repo_resources_keys = [for elem_outer in [for elem_inner in local.bootstrap_repo_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${elem_outer.metadata.name}"]
+  bootstrap_repo_resources_keys = [for elem_outer in [for elem_inner in local.bootstrap_repo_resources_values: yamldecode(elem_inner)]: "${elem_outer.apiVersion}/${elem_outer.kind}/${lookup(elem_outer.metadata, "namespace", "default")}/${elem_outer.metadata.name}"]
   bootstrap_repo_resources = zipmap(local.bootstrap_repo_resources_keys, local.bootstrap_repo_resources_values)
 }
 
