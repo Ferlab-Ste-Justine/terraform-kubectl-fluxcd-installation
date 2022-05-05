@@ -9,7 +9,7 @@
   cluster_domain = "__CLUSTER_DOMAIN__"
   namespace = "__FLUX_NAMESPACE__"
   components_extra = ["image-reflector-controller", "image-automation-controller"]
-  version = "v0.27.0"
+  version = "v0.30.2"
 }
 
 resource "local_file" "flux" {
