@@ -23,18 +23,6 @@ The module takes the following input variables:
 ## Example
 
 ```
-resource "tls_private_key" "root_orchestration_repo" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "github_repository_deploy_key" "root_repo" {
-  title      = "Fluxcd deploy key for some repo"
-  repository = "my-repo"
-  key        = tls_private_key.root_orchestration_repo.public_key_openssh
-  read_only  = "false"
-}
-
 module "flux_installation" {
   source = "git::https://github.com/Ferlab-Ste-Justine/fluxcd-installation.git"
 }
