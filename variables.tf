@@ -13,6 +13,7 @@ variable "cluster_domain" {
 variable "chart_version" {
   description = "Version of the fluxcd-community/flux2 Helm chart to install"
   type        = string
+  default     = "2.18.3"
 }
 
 variable "components" {

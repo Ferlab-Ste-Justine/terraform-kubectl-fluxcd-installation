@@ -56,8 +56,8 @@ locals {
   )
 }
 
-resource "helm_release" "flux" {
-  name             = "flux"
+resource "helm_release" "fluxcd" {
+  name             = "fluxcd"
   namespace        = var.fluxcd_namespace
   create_namespace = true
   chart            = "flux2"
