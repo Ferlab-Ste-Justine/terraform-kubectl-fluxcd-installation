@@ -61,7 +61,7 @@ resource "helm_release" "fluxcd" {
   namespace        = var.fluxcd_namespace
   create_namespace = true
   chart            = "flux2"
-  repository       = "https://fluxcd-community.github.io/helm-charts"
+  repository       = var.chart_repository
   version          = var.chart_version
 
   values = [yamlencode(local.helm_values)]

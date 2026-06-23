@@ -16,6 +16,12 @@ variable "chart_version" {
   default     = "2.18.3"
 }
 
+variable "chart_repository" {
+  description = "Helm repository hosting the flux2 chart. Defaults to the community HTTP repo; set to an oci:// registry to pull from a mirror reachable inside the cluster."
+  type        = string
+  default     = "https://fluxcd-community.github.io/helm-charts"
+}
+
 variable "components" {
   description = <<-EOT
     Per-controller image, tag and nodeSelector overrides. Any field left unset
